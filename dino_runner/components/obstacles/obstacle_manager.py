@@ -11,7 +11,6 @@ from dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD
 class ObstacleManager:
     def __init__(self):
         self.obstacles= []
- #       self.step_index = 0
 
     def update(self, game):
         if len(self.obstacles) == 0:
@@ -30,7 +29,7 @@ class ObstacleManager:
             if game.player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(500)
                 game.playing = False
-                print("chocaste")
+                game.death_count += 1
                 break
     
     def draw(self, screen):

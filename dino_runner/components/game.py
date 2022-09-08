@@ -23,6 +23,7 @@ class Game:
 
         self.running = False
         self.score = 0
+        self.death_count = 0
 
     def execute(self):
         self.running = True
@@ -64,6 +65,7 @@ class Game:
         self.screen.fill((255, 255, 255)) 
         self.draw_background() 
         self.draw_score()
+        self.draw_deaths()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         pygame.display.update()
@@ -85,6 +87,13 @@ class Game:
         text_rect.center = (1000, 50)
         self.screen.blit(text, text_rect)
 
+    def draw_deaths(self):
+        font = pygame.font.Font(FONT_STYLE, 24)
+        text = font.render(f"Number of deaths: {self.death_count}", True, (0, 0, 0))
+        text_rect = text.get_rect()
+        text_rect.center = (970, 100)
+        self.screen.blit(text, text_rect)
+
     def handle_events_on_menu(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
@@ -98,11 +107,20 @@ class Game:
         half_screen_heigth = SCREEN_HEIGHT // 2
         half_screen_width = SCREEN_WIDTH // 2
 
-        font = pygame.font.Font(FONT_STYLE, 30)
-        text = font.render("Press any key to star", True, (0, 0, 0))
-        text_rect = text.get_rect()
-        text_rect.center = (half_screen_width, half_screen_heigth)
-        self.screen.blit(text, text_rect)
+        if self.death_count == 0:
+            font = pygame.font.Font(FONT_STYLE, 30)
+            text = font.render("Press any key to star", True, (0, 0, 0))
+            text_rect = text.get_rect()
+            text_rect.center = (half_screen_width, half_screen_heigth)
+            self.screen.blit(text, text_rect)
+        else:
+            self.screen.blit(ICON, (half_screen_width -50 , half_screen_heigth - 140))
+
+            font = pygame.font.Font(FONT_STYLE, 30)
+            text = font.render("You crashed! Press any key to star", True, (0, 0, 0))
+            text_rect = text.get_rect()
+            text_rect.center = (half_screen_width, half_screen_heigth)
+            self.screen.blit(text, text_rect)
 
         pygame.display.update()
         self.handle_events_on_menu()
